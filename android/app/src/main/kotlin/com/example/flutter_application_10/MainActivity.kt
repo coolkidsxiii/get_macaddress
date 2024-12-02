@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.wifi.WifiManager
 import android.os.Build
+import android.widget.Toast
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
@@ -81,6 +82,22 @@ class MainActivity : FlutterActivity() {
             true
         } else {
             true
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        
+        if (requestCode == DEVICE_ADMIN_REQUEST_CODE) {
+            val devicePolicyManager = getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
+            val adminComponent = ComponentName(this, MyDeviceAdminReceiver::class.java)
+            
+            val isAdminActive = devicePolicyManager.isAdminActive(adminComponent)
+            Toast.makeText(
+                this, 
+                "Device Admin Status: ${if (isAdminActive) "Enabled" else "Disabled"}", 
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 }

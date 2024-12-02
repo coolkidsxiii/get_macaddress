@@ -15,14 +15,4 @@ class MyDeviceAdminReceiver : DeviceAdminReceiver() {
         super.onDisabled(context, intent)
         Toast.makeText(context, "Device Admin Disabled", Toast.LENGTH_SHORT).show()
     }
-
-    override fun onPasswordChanged(context: Context, intent: Intent) {
-        super.onPasswordChanged(context, intent)
-        Toast.makeText(context, "Password Changed", Toast.LENGTH_SHORT).show()
-    }
-
-    override fun onPasswordFailed(context: Context, intent: Intent) {
-        super.onPasswordFailed(context, intent)
-        Toast.makeText(context, "Password Failed", Toast.LENGTH_SHORT).show()
-    }
 }
