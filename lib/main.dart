@@ -31,7 +31,7 @@ class _DeviceInfoPageState extends State<DeviceInfoPage> {
 
   String _serialNumber = 'กำลังตรวจสอบ...';
   String _macAddress = 'กำลังตรวจสอบ...';
-  String _deviceOwnerStatus = 'กำลังตรวจสอบ...';
+  String _deviceAdminStatus = 'กำลังตรวจสอบ...';
   bool _isDeviceAdminEnabled = false;
 
   @override
@@ -55,19 +55,20 @@ class _DeviceInfoPageState extends State<DeviceInfoPage> {
     try {
       final serialNumber = await platform.invokeMethod('getSerialNumber');
       final macAddress = await platform.invokeMethod('getMacAddress');
-      final isDeviceOwner = await platform.invokeMethod('isDeviceOwner');
+      final isDeviceAdmin = await platform.invokeMethod('isDeviceAdmin');
 
       setState(() {
         _serialNumber = serialNumber ?? 'ไม่พบ';
         _macAddress = macAddress ?? 'ไม่พบ';
-        _deviceOwnerStatus =
-            isDeviceOwner ? 'เป็น Device Owner' : 'ไม่ได้เป็น Device Owner';
+        _deviceAdminStatus = isDeviceAdmin
+            ? 'เปิดใช้งาน Device Admin'
+            : 'ปิดใช้งาน Device Admin';
       });
     } on PlatformException catch (e) {
       setState(() {
         _serialNumber = 'เกิดข้อผิดพลาด: ${e.message}';
         _macAddress = 'เกิดข้อผิดพลาด: ${e.message}';
-        _deviceOwnerStatus = 'เกิดข้อผิดพลาด: ${e.message}';
+        _deviceAdminStatus = 'เกิดข้อผิดพลาด: ${e.message}';
       });
     }
   }
@@ -89,7 +90,7 @@ class _DeviceInfoPageState extends State<DeviceInfoPage> {
               SizedBox(height: 16),
               _buildInfoCard('MAC Address', _macAddress),
               SizedBox(height: 16),
-              _buildInfoCard('Device Owner Status', _deviceOwnerStatus),
+              _buildInfoCard('Device Admin Status', _deviceAdminStatus),
               SizedBox(height: 16),
               ElevatedButton(
                 onPressed: _isDeviceAdminEnabled
